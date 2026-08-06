@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: loop_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: loop
+      POSTGRES_PASSWORD: loop_dev_password
+      POSTGRES_DB: loop_development
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U loop"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
