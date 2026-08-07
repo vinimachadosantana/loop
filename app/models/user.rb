@@ -1,6 +1,8 @@
 class User < ApplicationRecord
   has_secure_password
   has_many :sessions, dependent: :destroy
+  has_many :memberships, dependent: :destroy
+  has_many :organizations, through: :memberships
 
   EMAIL_FORMAT = URI::MailTo::EMAIL_REGEXP
   MINIMUM_PASSWORD_LENGTH = 12
