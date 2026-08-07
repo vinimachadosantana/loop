@@ -26,4 +26,14 @@ RSpec.describe "Api::V1::Organizations", type: :request do
       expect(json_body.map { |o| o["id"] }).to eq([ mine.id ])
     end
   end
+
+  describe "cross-tenant access" do
+    it "returns 404 for an organisation the user does not belong to" do
+      other_org = create(:organization)
+
+      get "/api/v1/organizations/#{other_org.id}", headers: auth_headers_for(user)
+
+      expect(response).to have_http_status(:not_found)
+    end
+  end
 end
