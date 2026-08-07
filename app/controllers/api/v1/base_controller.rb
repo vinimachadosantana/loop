@@ -1,10 +1,17 @@
 module Api
   module V1
     class BaseController < ApplicationController
+      include Authentication
+      include Pundit::Authorization
+
+      after_action :verify_authorized, unless: :index_action?
+      after_action :verify_policy_scoped, if: :index_action?
+
       rescue_from StandardError, with: :internal_server_error
       rescue_from ActiveRecord::RecordNotFound, with: :not_found
       rescue_from ActionController::ParameterMissing, with: :bad_request
       rescue_from ActiveRecord::RecordInvalid, with: :unprocessable_entity
+      rescue_from Pundit::NotAuthorizedError, with: :forbidden
 
       private
 
@@ -35,6 +42,18 @@ module Api
         raise error if Rails.env.local?
 
         render_error(code: "internal_error", message: "Something went wrong", status: :internal_server_error)
+      end
+
+      def forbidden(_error)
+        render_error(code: "forbidden", message: "You are not allowed to do that", status: :forbidden)
+      end
+
+      def pundit_user
+        current_user
+      end
+
+      def index_action?
+        action_name == "index"
       end
     end
   end
