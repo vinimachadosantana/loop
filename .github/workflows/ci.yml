@@ -19,7 +19,7 @@ jobs:
           POSTGRES_PASSWORD: loop_dev_password
           POSTGRES_DB: loop_test
         ports:
-          - 5432:5432
+          - 5433:5432
         options: >-
           --health-cmd "pg_isready -U loop"
           --health-interval 5s
