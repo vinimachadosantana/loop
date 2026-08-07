@@ -22,8 +22,8 @@ RSpec.describe User, type: :model do
   end
 
   it "authenticates with the correct password" do
-    user = create(:user, password: "password123")
-    expect(user.authenticate("password123")).to eq(user)
+    user = create(:user, password: "password1234")
+    expect(user.authenticate("password1234")).to eq(user)
     expect(user.authenticate("wrong")).to be false
   end
 end
