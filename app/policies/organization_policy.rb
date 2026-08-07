@@ -5,6 +5,10 @@ class OrganizationPolicy < ApplicationPolicy
     end
   end
 
+  def create?
+    true
+  end
+
   def show?
     membership.present?
   end

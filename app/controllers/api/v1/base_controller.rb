@@ -4,8 +4,8 @@ module Api
       include Authentication
       include Pundit::Authorization
 
-      after_action :verify_authorized, except: :index
-      after_action :verify_policy_scoped, only: :index
+      after_action :verify_authorized, unless: :index_action?
+      after_action :verify_policy_scoped, if: :index_action?
 
       rescue_from StandardError, with: :internal_server_error
       rescue_from ActiveRecord::RecordNotFound, with: :not_found
@@ -50,6 +50,10 @@ module Api
 
       def pundit_user
         current_user
+      end
+
+      def index_action?
+        action_name == "index"
       end
     end
   end

@@ -2,6 +2,7 @@ module Api
   module V1
     class RegistrationsController < BaseController
       allow_unauthenticated_access
+      skip_after_action :verify_authorized
 
       def create
         user = User.new(registration_params)

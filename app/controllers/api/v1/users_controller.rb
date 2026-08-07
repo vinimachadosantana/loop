@@ -3,6 +3,7 @@ module Api
     class UsersController < BaseController
       def show
         user = User.find(params[:id])
+        authorize user
         render json: UserSerializer.new(user).serialize, status: :ok
       end
     end
