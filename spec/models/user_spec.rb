@@ -6,6 +6,7 @@ RSpec.describe User, type: :model do
   it { is_expected.to validate_presence_of(:email) }
   it { is_expected.to validate_presence_of(:name) }
   it { is_expected.to validate_uniqueness_of(:email).case_insensitive }
+  it { is_expected.to have_secure_password }
 
   it "downcases and strips the email before validation" do
     user = create(:user, email: "  MiXeD@Example.COM ")
@@ -14,5 +15,15 @@ RSpec.describe User, type: :model do
 
   it "rejects a malformed email" do
     expect(build(:user, email: "not-an-email")).not_to be_valid
+  end
+
+  it "rejects a short password" do
+    expect(build(:user, password: "short")).not_to be_valid
+  end
+
+  it "authenticates with the correct password" do
+    user = create(:user, password: "password123")
+    expect(user.authenticate("password123")).to eq(user)
+    expect(user.authenticate("wrong")).to be false
   end
 end
