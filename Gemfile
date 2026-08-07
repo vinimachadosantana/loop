@@ -9,6 +9,7 @@ gem "thruster", require: false
 gem "image_processing", "~> 1.2"
 gem "alba"
 gem "bcrypt", "~> 3.1.7"
+gem "pundit"
 
 group :development, :test do
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
