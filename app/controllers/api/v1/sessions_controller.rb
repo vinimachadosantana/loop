@@ -2,6 +2,7 @@ module Api
   module V1
     class SessionsController < BaseController
       allow_unauthenticated_access only: [ :create ]
+      skip_after_action :verify_authorized
 
       def create
         user = User.authenticate_by(email: session_params[:email].to_s.downcase.strip,
