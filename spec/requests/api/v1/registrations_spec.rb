@@ -10,7 +10,8 @@ RSpec.describe "Api::V1::Registrations", type: :request do
       }.to change(User, :count).by(1)
 
       expect(response).to have_http_status(:created)
-      expect(json_body["email"]).to eq("new@example.com")
+      expect(json_body["user"]["email"]).to eq("new@example.com")
+      expect(json_body["token"]).to be_present
     end
 
     it "never returns the password digest" do
